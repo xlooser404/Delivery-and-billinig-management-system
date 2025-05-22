@@ -1,10 +1,17 @@
+// backend/controllers/agentsController.php
 <?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-// Include Database and Agent models
-require_once '../config/db.php';  // Path to Database.php
-require_once '../models/Agent.php';     // Path to Agent.php
+// Use your existing db.php connection
+require_once __DIR__ . '/../config/db.php';  // This provides $conn directly
+
+// Include Agent model
+require_once __DIR__ . '/../models/Agent.php';
+
+// Create an instance of the Agent model with existing connection
+$agentModel = new Agent($conn);
+
 
 // Create the database connection
 $database = new Database();
