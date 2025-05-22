@@ -1,74 +1,69 @@
 <?php
-ini_set('display_errors', 1);
+// backend/controllers/customersController.php
+
 error_reporting(E_ALL);
+ini_set('display_errors', 1);
+session_start();
 
 require_once '../config/db.php';
+require_once '../models/Customer.php';
 
-// Enable MySQLi error reporting
-mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+try {
+    // Initialize Customer model
+    $customer = new Customer($conn);
 
-// Sanitize function (simple fallback)
-function sanitize($value) {
-    return htmlspecialchars(trim($value));
-}
+    // Handle add customer
+    if(isset($_POST['add_customer'])) {
+        $customer->name = $_POST['name'] ?? '';
+        $customer->store_name = $_POST['store_name'] ?? '';
+        $customer->email = $_POST['email'] ?? '';
+        $customer->phone = $_POST['phone'] ?? '';
+        $customer->address = $_POST['address'] ?? '';
 
-// ADD AGENT
-if (isset($_POST['add_agent'])) {
-    $name       = sanitize($_POST['name']);
-    $phone      = sanitize($_POST['phone']);
-    $email      = sanitize($_POST['email']);
-    $address    = sanitize($_POST['address']);
-    $other_column = sanitize($_POST['other_column']); // Add any other column you need
-
-    try {
-        $stmt = $conn->prepare("INSERT INTO agents (name, phone, email, address, other_column, created_at) VALUES (?, ?, ?, ?, ?, NOW())");
-        $stmt->bind_param("sssss", $name, $phone, $email, $address, $other_column);
-        $stmt->execute();
-        $stmt->close();
-    } catch (Exception $e) {
-        die("Error inserting agent: " . $e->getMessage());
+        if($customer->create()) {
+            $_SESSION['success'] = "Customer added successfully";
+        } else {
+            $_SESSION['error'] = "Failed to add customer";
+        }
+        header("Location: http://localhost/deliverymgmtsys/frontend/pages/customers.php");
+        exit();
     }
 
-    header("Location: ../../frontend/pages/agents.php");
-    exit();
-}
+    // Handle update customer
+    if(isset($_POST['update_customer'])) {
+        $customer->id = $_POST['id'] ?? '';
+        $customer->name = $_POST['name'] ?? '';
+        $customer->store_name = $_POST['store_name'] ?? '';
+        $customer->email = $_POST['email'] ?? '';
+        $customer->phone = $_POST['phone'] ?? '';
+        $customer->address = $_POST['address'] ?? '';
 
-// UPDATE AGENT
-if (isset($_POST['update_agent'])) {
-    $id         = intval($_POST['id']);
-    $name       = sanitize($_POST['name']);
-    $phone      = sanitize($_POST['phone']);
-    $email      = sanitize($_POST['email']);
-    $address    = sanitize($_POST['address']);
-    $other_column = sanitize($_POST['other_column']); // Add any other column you need
-
-    try {
-        $stmt = $conn->prepare("UPDATE agents SET name=?, phone=?, email=?, address=?, other_column=? WHERE id=?");
-        $stmt->bind_param("sssssi", $name, $phone, $email, $address, $other_column, $id);
-        $stmt->execute();
-        $stmt->close();
-    } catch (Exception $e) {
-        die("Error updating agent: " . $e->getMessage());
+        if($customer->update()) {
+            $_SESSION['success'] = "Customer updated successfully";
+        } else {
+            $_SESSION['error'] = "Failed to update customer";
+        }
+        header("Location: http://localhost/deliverymgmtsys/frontend/pages/customers.php");
+        exit();
     }
 
-    header("Location: ../../frontend/pages/agents.php");
-    exit();
-}
+    // Handle delete customer
+    if(isset($_POST['delete_customer'])) {
+        $customer->id = $_POST['id'] ?? '';
 
-// DELETE AGENT
-if (isset($_POST['delete_agent'])) {
-    $id = intval($_POST['id']);
-
-    try {
-        $stmt = $conn->prepare("DELETE FROM agents WHERE id=?");
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $stmt->close();
-    } catch (Exception $e) {
-        die("Error deleting agent: " . $e->getMessage());
+        if($customer->delete()) {
+            $_SESSION['success'] = "Customer deleted successfully";
+        } else {
+            $_SESSION['error'] = "Failed to delete customer";
+        }
+        header("Location: http://localhost/deliverymgmtsys/frontend/pages/customers.php");
+        exit();
     }
 
-    header("Location: ../../frontend/pages/agents.php");
+} catch (Exception $e) {
+    // Log the error and show a generic message
+    error_log($e->getMessage());
+    $_SESSION['error'] = "An error occurred while processing your request";
+    header("Location: http://localhost/deliverymgmtsys/frontend/pages/customers.php");
     exit();
 }
-?>
