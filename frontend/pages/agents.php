@@ -1,3 +1,18 @@
+<!--
+=========================================================
+* Online Delivery & Billing Management System - v1.0
+=========================================================
+
+* Product Page: https://www.softworxstudios.com
+* Copyright 2025 SoftWorx Studios (https://www.softworxstudios.com)
+* Licensed under MIT (https://www.softworxstudios.com/license)
+* Coded by SoftWorx Studios
+
+=========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+-->
+
 <?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
