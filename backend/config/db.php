@@ -1,17 +1,26 @@
+// backend/config/Database.php
 <?php
-// config/db.php
+class Database {
+    private $host = "localhost";
+    private $username = "root";
+    private $password = "";
+    private $dbname = "thenuka_db";
+    public $conn;
 
-// Database credentials
-$servername = "localhost";
-$username = "root";  // Default XAMPP MySQL username
-$password = "";      // Default XAMPP MySQL password (blank)
-$dbname = "thenuka_db";  // Replace with your actual database name
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    public function getConnection() {
+        $this->conn = null;
+        
+        try {
+            $this->conn = new mysqli($this->host, $this->username, $this->password, $this->dbname);
+            
+            if ($this->conn->connect_error) {
+                throw new Exception("Connection failed: " . $this->conn->connect_error);
+            }
+        } catch(Exception $exception) {
+            error_log("Database error: " . $exception->getMessage());
+            throw $exception; // Re-throw for controller to handle
+        }
+        
+        return $this->conn;
+    }
 }
-?>

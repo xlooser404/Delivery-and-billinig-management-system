@@ -1,6 +1,10 @@
 <?php
 // backend/models/Customer.php
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+session_start();
+
 class Customer {
     private $conn;
     private $table = 'customers';
