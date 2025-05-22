@@ -1,0 +1,48 @@
+thenuka-delivery/
+│
+├── backend/
+│   ├── config/
+│   │   └── db.php                        # Database connection
+│   │
+│   ├── controllers/
+│   │   └── AuthController.php           # Login/logout handling logic
+│   │
+│   ├── models/
+│   │   └── User.php                     # User model - handles DB operations
+│   │
+│   ├── routes/
+│   │   └── api.php                      # Routes for form handling (login, register, etc.)
+│   │
+│   ├── core/
+│   │   └── SessionManager.php           # Optional - handles session logic
+│   │
+│   ├── utils/
+│   │   └── helpers.php                  # Shared functions (e.g., redirect, sanitize, etc.)
+│   │
+│   └── logout.php                      # Destroys session, logs out user
+│
+├── frontend/
+│   ├── auth/
+│   │   └── login.php                   # Login form UI (Soft UI)
+│   │
+│   ├── dashboard/
+│   │   └── index.php                   # Admin dashboard (main page after login)
+│   │
+│   ├── layout/
+│   │   ├── header.php
+│   │   ├── footer.php                  # Customize with SoftWorX Studios credit
+│   │   └── sidebar.php
+│   │
+│   ├── assets/
+│   │   ├── css/
+│   │   ├── js/
+│   │   └── soft-ui/                    # Full Soft UI files (you can dump the full zip here)
+│   │
+│   └── public/
+│       ├── uploads/                    # Uploaded product images, etc.
+│       └── img/                        # Custom images
+│
+├── index.php                           # Entry point — redirects based on login
+├── README.md
+└── sql/
+    └── thenuka_schema.sql              # Your DB schema dump
